@@ -1,16 +1,5 @@
 #include "fabo-adxl345.h"
 #include "Wire.h"
-
-int x;
-int y;
-int z;
-int act_x;
-int act_y;
-int act_z;
-int asleep;
-int tap_x;
-int tap_y;
-int tap_z;
   
 void setup()
 {
@@ -29,7 +18,6 @@ void setup()
 
 void loop() {
 
-  fabo3Axis.readXYZ(&x,&y,&z);
   byte tap = fabo3Axis.readIntStatus();
 
   if(fabo3Axis.isDoubleTap(tap)){
