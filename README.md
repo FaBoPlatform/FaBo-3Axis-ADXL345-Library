@@ -1,4 +1,4 @@
-# FaBoAmbientLight-ISL29034-Library
+# FaBo3Axis-ADXL345-Library
 
 # FaBo3Axis
 
