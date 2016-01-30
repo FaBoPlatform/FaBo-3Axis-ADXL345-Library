@@ -4,8 +4,15 @@
 #define ADXL345_SLAVE_ADDRESS (0x53)
 
 #define ADXL345_DEVID_REG 0x00
+#define ADXL345_THRESH_TAP_REG 0x1D
+#define ADXL345_DUR_REG 0x22
+#define ADXL345_LATENT_REG 0x23
+#define ADXL345_WINDOW_REG 0x24
+#define ADXL345_POWER_CTL_REG 0x2D
+#define ADXL345_TAP_STATUS_REG 0x2B
+#define ADXL345_TAP_AXES_REG 0x2A
+#define ADXL345_INT_SOURCE_REG 0x30
 #define ADXL345_DATA_FORMAT_REG 0x31
-#define ADXL345_POWER_CTL_REG 0x2d
 
 #define ADXL345_SELF_TEST_ON 0b10000000
 #define ADXL345_SELF_TEST_OFF 0b00000000
@@ -44,6 +51,10 @@ public:
   void configuration(void);
   void powerOn(void);
   void readXYZ(int *x, int *y, int *z);
+  byte readIntStatus();
+  void enableTap();
+  bool isDoubleTap(byte value);
+  bool isSingleTap(byte value);
 private:
   void readI2c(byte register_addr, int num, byte *buf);
   void writeI2c(byte register_addr, byte value);

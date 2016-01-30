@@ -4,6 +4,13 @@
 int x;
 int y;
 int z;
+int act_x;
+int act_y;
+int act_z;
+int asleep;
+int tap_x;
+int tap_y;
+int tap_z;
   
 void setup()
 {
@@ -17,18 +24,18 @@ void setup()
   Serial.println("Init...");
   fabo3Axis.configuration();
   fabo3Axis.powerOn();
+  fabo3Axis.enableTap();  
 }
 
 void loop() {
 
   fabo3Axis.readXYZ(&x,&y,&z);
+  byte tap = fabo3Axis.readIntStatus();
 
-  Serial.print("x: ");
-  Serial.print(x);
-  Serial.print(", y: ");
-  Serial.print(y);
-  Serial.print(", z: ");
-  Serial.println(z);
- 
+  if(fabo3Axis.isDoubleTap(tap)){
+    Serial.println("Double Tap");
+  } else if(fabo3Axis.isSingleTap(tap)){
+    Serial.println("Single Tap");
+  }
   delay(100);
 }

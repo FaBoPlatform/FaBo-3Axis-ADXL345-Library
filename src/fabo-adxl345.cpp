@@ -19,7 +19,7 @@ void adxl345::powerOn()
    POWER |= ADXL345_MEASURE_ON;
    POWER |= ADXL345_SLEEP_OFF;
    POWER |= ADXL345_WAKEUP_8HZ;
-   Serial.println(POWER,HEX);
+   
    writeI2c(ADXL345_POWER_CTL_REG, POWER);
 }
 
@@ -31,6 +31,40 @@ void adxl345::readXYZ(int *x, int *y, int *z)
   *x = (((int)axis_buff[1]) << 8) | axis_buff[0];   
   *y = (((int)axis_buff[3]) << 8) | axis_buff[2];
   *z = (((int)axis_buff[5]) << 8) | axis_buff[4];
+}
+
+byte adxl345::readIntStatus(){
+
+    byte buff;
+    readI2c(ADXL345_INT_SOURCE_REG, 1, &buff); //レジスターアドレス 0x32から6バイト読む
+    
+    return buff;
+}
+                           
+void adxl345::enableTap()
+{  
+  writeI2c(ADXL345_THRESH_TAP_REG, 50); // 単位 62.5mg/LBS
+  writeI2c(ADXL345_DUR_REG, 15); // 単位 1.25ms/LSB
+  writeI2c(ADXL345_LATENT_REG, 120); // 単位 1.25ms/LSB
+  writeI2c(ADXL345_WINDOW_REG, 200); // 単位 1.25ms/LSB
+}
+
+bool adxl345::isSingleTap(byte value)
+{
+  if((value & 0b01000000) == 0b01000000){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool adxl345::isDoubleTap(byte value)
+{
+  if((value & 0b00100000) == 0b00100000){
+    return true;
+  } else {
+    return false;
+  }
 }
 
 void adxl345::configuration()
