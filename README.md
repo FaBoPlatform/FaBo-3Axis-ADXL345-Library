@@ -1,16 +1,16 @@
 # FaBoAmbientLight-ISL29034-Library
 
-# FaBoAmbientLight
+# FaBo3Axis
 
-This is a library for FaBo AmbientLight Brick.
+This is a library for FaBo 3Aixs Brick.
 
-# ISL29034
+# ADXL345
 
-ISL29034 is intersil's mems sensor for AmbientLight.
+ADXL345 is 3axis sensor.
 
 # Datasheet
 
-[ISL29034 Datasheet](http://datasheet.octopart.com/ISL29034IROZ-T7-Intersil-datasheet-27714379.pdf)
+[ADXL345 Datasheet](http://www.analog.com/media/en/technical-documentation/data-sheets/ADXL345.PDF)
 
 # Releases
 
