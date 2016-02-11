@@ -1,27 +1,28 @@
 #include "fabo-adxl345.h"
 #include "Wire.h"
 
-int x;
-int y;
-int z;
-  
+FaBo3Axis fabo3axis;
+
 void setup()
 {
   Serial.begin(9600); // シリアルの開始デバック用
   
   Serial.println("Checking I2C device...");
   
-  if(fabo3Axis.searchDevice()){
+  if(fabo3axis.searchDevice()){
     Serial.println("I am ADXL345");
   }
   Serial.println("Init...");
-  fabo3Axis.configuration();
-  fabo3Axis.powerOn();
+  fabo3axis.configuration();
+  fabo3axis.powerOn();
 }
 
 void loop() {
-
-  fabo3Axis.readXYZ(&x,&y,&z);
+  int x;
+  int y;
+  int z;
+  
+  fabo3axis.readXYZ(&x,&y,&z);
 
   Serial.print("x: ");
   Serial.print(x);
@@ -30,5 +31,5 @@ void loop() {
   Serial.print(", z: ");
   Serial.println(z);
  
-  delay(100);
+  delay(1000);
 }

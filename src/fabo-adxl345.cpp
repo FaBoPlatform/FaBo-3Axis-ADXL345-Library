@@ -1,6 +1,6 @@
 #include "fabo-adxl345.h"
 
-bool adxl345::searchDevice()
+bool FaBo3Axis::searchDevice()
 {
     
   byte device = 0x00;
@@ -13,7 +13,7 @@ bool adxl345::searchDevice()
   }
 }
 
-void adxl345::powerOn()
+void FaBo3Axis::powerOn()
 {
    byte POWER = ADXL345_AUTO_SLEEP_OFF;
    POWER |= ADXL345_MEASURE_ON;
@@ -23,7 +23,7 @@ void adxl345::powerOn()
    writeI2c(ADXL345_POWER_CTL_REG, POWER);
 }
 
-void adxl345::readXYZ(int *x, int *y, int *z)
+void FaBo3Axis::readXYZ(int *x, int *y, int *z)
 {
   uint8_t length = 6;
   byte axis_buff[6];
@@ -33,7 +33,7 @@ void adxl345::readXYZ(int *x, int *y, int *z)
   *z = (((int)axis_buff[5]) << 8) | axis_buff[4];
 }
 
-byte adxl345::readIntStatus(){
+byte FaBo3Axis::readIntStatus(){
 
     byte buff;
     readI2c(ADXL345_INT_SOURCE_REG, 1, &buff); //レジスターアドレス 0x32から6バイト読む
@@ -41,7 +41,7 @@ byte adxl345::readIntStatus(){
     return buff;
 }
                            
-void adxl345::enableTap()
+void FaBo3Axis::enableTap()
 {  
   writeI2c(ADXL345_THRESH_TAP_REG, 50); // 単位 62.5mg/LBS
   writeI2c(ADXL345_DUR_REG, 15); // 単位 1.25ms/LSB
@@ -49,7 +49,7 @@ void adxl345::enableTap()
   writeI2c(ADXL345_WINDOW_REG, 200); // 単位 1.25ms/LSB
 }
 
-bool adxl345::isSingleTap(byte value)
+bool FaBo3Axis::isSingleTap(byte value)
 {
   if((value & 0b01000000) == 0b01000000){
     return true;
@@ -58,7 +58,7 @@ bool adxl345::isSingleTap(byte value)
   }
 }
 
-bool adxl345::isDoubleTap(byte value)
+bool FaBo3Axis::isDoubleTap(byte value)
 {
   if((value & 0b00100000) == 0b00100000){
     return true;
@@ -67,7 +67,7 @@ bool adxl345::isDoubleTap(byte value)
   }
 }
 
-void adxl345::configuration()
+void FaBo3Axis::configuration()
 {
    byte CONF = ADXL345_SELF_TEST_OFF;
    CONF |= ADXL345_SPI_OFF;
@@ -79,7 +79,7 @@ void adxl345::configuration()
 }
 
 // I2Cへの書き込み
-void adxl345::writeI2c(byte register_addr, byte value) {
+void FaBo3Axis::writeI2c(byte register_addr, byte value) {
   Wire.begin();       // I2Cの開始
   Wire.beginTransmission(ADXL345_SLAVE_ADDRESS);  
   Wire.write(register_addr);         
@@ -88,7 +88,7 @@ void adxl345::writeI2c(byte register_addr, byte value) {
 }
 
 // I2Cへの読み込み
-void adxl345::readI2c(byte register_addr, int num, byte buffer[]) {
+void FaBo3Axis::readI2c(byte register_addr, int num, byte buffer[]) {
   Wire.begin();       // I2Cの開始
   Wire.beginTransmission(ADXL345_SLAVE_ADDRESS); 
   Wire.write(register_addr);           
@@ -106,4 +106,3 @@ void adxl345::readI2c(byte register_addr, int num, byte buffer[]) {
   Wire.endTransmission();         
 }
 
-adxl345 fabo3Axis;

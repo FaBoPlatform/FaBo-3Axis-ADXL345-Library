@@ -44,7 +44,7 @@
 
 #define ADXL345_DEVICE 0xe5
 
-class adxl345
+class FaBo3Axis
 {
 public:
   bool searchDevice(void);
@@ -59,5 +59,3 @@ private:
   void readI2c(byte register_addr, int num, byte *buf);
   void writeI2c(byte register_addr, byte value);
 };
-
-extern adxl345 fabo3Axis;
