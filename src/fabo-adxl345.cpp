@@ -2,25 +2,25 @@
 
 bool FaBo3Axis::searchDevice()
 {
-    
+
   byte device = 0x00;
   readI2c(ADXL345_DEVID_REG, 1, &device);
   
   if(device == ADXL345_DEVICE){
-      return true;
+    return true;
   } else{
-      return false;
+    return false;
   }
 }
 
 void FaBo3Axis::powerOn()
 {
-   byte POWER = ADXL345_AUTO_SLEEP_OFF;
-   POWER |= ADXL345_MEASURE_ON;
-   POWER |= ADXL345_SLEEP_OFF;
-   POWER |= ADXL345_WAKEUP_8HZ;
-   
-   writeI2c(ADXL345_POWER_CTL_REG, POWER);
+  byte power = ADXL345_AUTO_SLEEP_OFF;
+  power |= ADXL345_MEASURE_ON;
+  power |= ADXL345_SLEEP_OFF;
+  power |= ADXL345_WAKEUP_8HZ;
+
+  writeI2c(ADXL345_POWER_CTL_REG, power);
 }
 
 void FaBo3Axis::readXYZ(int *x, int *y, int *z)
@@ -33,14 +33,15 @@ void FaBo3Axis::readXYZ(int *x, int *y, int *z)
   *z = (((int)axis_buff[5]) << 8) | axis_buff[4];
 }
 
-byte FaBo3Axis::readIntStatus(){
+byte FaBo3Axis::readIntStatus()
+{
 
-    byte buff;
-    readI2c(ADXL345_INT_SOURCE_REG, 1, &buff); //レジスターアドレス 0x32から6バイト読む
-    
-    return buff;
+  byte buff;
+  readI2c(ADXL345_INT_SOURCE_REG, 1, &buff); //レジスターアドレス 0x32から6バイト読む
+  
+  return buff;
 }
-                           
+
 void FaBo3Axis::enableTap()
 {  
   writeI2c(ADXL345_THRESH_TAP_REG, 50); // 単位 62.5mg/LBS
@@ -69,13 +70,15 @@ bool FaBo3Axis::isDoubleTap(byte value)
 
 void FaBo3Axis::configuration()
 {
-   byte CONF = ADXL345_SELF_TEST_OFF;
-   CONF |= ADXL345_SPI_OFF;
-   CONF |= ADXL345_INT_INVERT_OFF;
-   CONF |= ADXL345_FULL_RES_OFF;
-   CONF |= ADXL345_JUSTIFY_OFF;
-   CONF |= ADXL345_RANGE_16G;
-   writeI2c(ADXL345_DATA_FORMAT_REG, CONF);
+
+  byte conf = ADXL345_SELF_TEST_OFF;
+  conf |= ADXL345_SPI_OFF;
+  conf |= ADXL345_INT_INVERT_OFF;
+  conf |= ADXL345_FULL_RES_OFF;
+  conf |= ADXL345_JUSTIFY_OFF;
+  conf |= ADXL345_RANGE_16G;
+ 
+  writeI2c(ADXL345_DATA_FORMAT_REG, conf);
 }
 
 // I2Cへの書き込み
@@ -105,4 +108,3 @@ void FaBo3Axis::readI2c(byte register_addr, int num, byte buffer[]) {
   }
   Wire.endTransmission();         
 }
-
