@@ -20,4 +20,4 @@ ADXL345 is 3-Axis Digital Accelerometer sensor.
 
 ## How to install.
 
-[Installing Additional Arduino Libraries](https://www.arduino.cc/en/Guide/Libraries#toc3)
+[Installing Additional Arduino Libraries](https://www.arduino.cc/en/Guide/Libraries)
