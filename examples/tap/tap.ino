@@ -1,5 +1,18 @@
-#include "fabo-adxl345.h"
-#include "Wire.h"
+/**
+ @file tap.ino
+ @brief This is an Example for the FaBo 3AXIS I2C Brick.
+
+   http://fabo.io/201.html
+
+   Released under APACHE LICENSE, VERSION 2.0
+
+   http://www.apache.org/licenses/
+
+ @author FaBo<info@fabo.io>
+*/
+
+#include <Wire.h>
+#include <FaBo3Axis_ADXL345.h>
 
 FaBo3Axis fabo3axis;
 
@@ -27,5 +40,5 @@ void loop() {
   } else if(fabo3axis.isSingleTap(tap)){
     Serial.println("Single Tap");
   }
-  delay(1000);
+  delay(10);
 }

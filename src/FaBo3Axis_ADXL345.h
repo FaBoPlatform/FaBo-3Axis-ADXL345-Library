@@ -1,18 +1,27 @@
 /**
- * @file fabo-adxl345.h
- * @brief fabo libtary of ADXL345
- * @author Akira Sasaki
- * @date 2,10, 2016
- */
+ @file FaBo3Axis_ADXL345.h
+ @brief This is a library for the FaBo 3AXIS I2C Brick.
 
-#include "Arduino.h"
-#include "Wire.h"
+   http://fabo.io/201.html
 
-/** SLAVE_ADDRESS register */
+   Released under APACHE LICENSE, VERSION 2.0
+
+   http://www.apache.org/licenses/
+
+ @author FaBo<info@fabo.io>
+*/
+
+#ifndef FABO3AXIS_ADXL345_H
+#define FABO3AXIS_ADXL345_H
+
+#include <Arduino.h>
+#include <Wire.h>
+
+/** SLAVE_ADDRESS */
 #define ADXL345_SLAVE_ADDRESS 0x53
 /** Who_am_i register */
 #define ADXL345_DEVID_REG 0x00
-/** Device check register */
+/** Device id */
 #define ADXL345_DEVICE 0xe5
 
 /** Tap Threshold */
@@ -23,9 +32,9 @@
 #define ADXL345_LATENT_REG 0x22
 /** Tap Window */
 #define ADXL345_WINDOW_REG 0x23
-/** interrupt　MAP */
+/** interrupt MAP */
 #define ADXL345_INT_MAP_REG 0x2F
-/** interrupt　Enable */
+/** interrupt Enable */
 #define ADXL345_INT_ENABLE_REG 0x2E
 /** Power-saving features control */
 #define ADXL345_POWER_CTL_REG 0x2D
@@ -71,7 +80,6 @@
 /** Axis Interrupt Double Tap */
 #define ADXL345_INT_DOUBLE_TAP 0b00100000
 
-
 /** RANGE 2G */
 #define ADXL345_RANGE_2G 0b00
 /** RANGE 4G */
@@ -110,6 +118,7 @@
 class FaBo3Axis
 {
 public:
+  FaBo3Axis();
   bool searchDevice(void);
   void configuration(void);
   void powerOn(void);
@@ -122,3 +131,5 @@ private:
   void writeI2c(byte register_addr, byte value);
   void readI2c(byte register_addr, int num, byte *buf);
 };
+
+#endif // FABO3AXIS_ADXL345_H

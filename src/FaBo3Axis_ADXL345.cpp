@@ -1,11 +1,25 @@
 /**
- * @file  fabo-adxl345.cpp
- * @brief fabo libtary of ADXL345
- * @author Akira Sasaki
- * @date 2,10, 2016
- */
+ @file FaBo3Axis_ADXL345.cpp
+ @brief This is a library for the FaBo 3AXIS I2C Brick.
 
-#include "fabo-adxl345.h"
+   http://fabo.io/201.html
+
+   Released under APACHE LICENSE, VERSION 2.0
+
+   http://www.apache.org/licenses/
+
+ @author FaBo<info@fabo.io>
+*/
+
+#include "FaBo3Axis_ADXL345.h"
+
+/**
+ @brief Constructor
+*/
+FaBo3Axis::FaBo3Axis()
+{
+  Wire.begin();
+}
 
 /**
  * @brief Search ADXL345 Device
@@ -139,7 +153,6 @@ bool FaBo3Axis::isDoubleTap(byte value)
  */
 void FaBo3Axis::writeI2c(byte register_addr, byte value)
 {
-  Wire.begin();
   Wire.beginTransmission(ADXL345_SLAVE_ADDRESS);
   Wire.write(register_addr);
   Wire.write(value);
@@ -154,7 +167,6 @@ void FaBo3Axis::writeI2c(byte register_addr, byte value)
  */
 void FaBo3Axis::readI2c(byte register_addr, int num, byte buffer[])
 {
-  Wire.begin();
   Wire.beginTransmission(ADXL345_SLAVE_ADDRESS);
   Wire.write(register_addr);
   Wire.endTransmission();
