@@ -17,6 +17,7 @@ ADXL345 is 3-Axis Digital Accelerometer sensor.
 ## Releases
 
 - 1.0.0 Initial release.
+- 1.0.1 change selectable i2c address
 
 ## How to install.
 

@@ -118,18 +118,19 @@
 class FaBo3Axis
 {
 public:
-  FaBo3Axis();
+  FaBo3Axis(uint8_t addr = ADXL345_SLAVE_ADDRESS);
   bool searchDevice(void);
   void configuration(void);
   void powerOn(void);
   void readXYZ(int *x, int *y, int *z);
-  byte readIntStatus();
+  uint8_t readIntStatus();
   void enableTap();
-  bool isSingleTap(byte value);
-  bool isDoubleTap(byte value);
+  bool isSingleTap(uint8_t value);
+  bool isDoubleTap(uint8_t value);
 private:
-  void writeI2c(byte register_addr, byte value);
-  void readI2c(byte register_addr, int num, byte *buf);
+  uint8_t _i2caddr;
+  void writeI2c(uint8_t register_addr, uint8_t value);
+  void readI2c(uint8_t register_addr, uint8_t num, uint8_t *buf);
 };
 
 #endif // FABO3AXIS_ADXL345_H

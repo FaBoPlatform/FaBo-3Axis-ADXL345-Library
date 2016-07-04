@@ -16,8 +16,9 @@
 /**
  @brief Constructor
 */
-FaBo3Axis::FaBo3Axis()
+FaBo3Axis::FaBo3Axis(uint8_t addr)
 {
+  _i2caddr = addr;
   Wire.begin();
 }
 
@@ -29,7 +30,7 @@ FaBo3Axis::FaBo3Axis()
 bool FaBo3Axis::searchDevice()
 {
 
-  byte device = 0x00;
+  uint8_t device = 0x00;
   readI2c(ADXL345_DEVID_REG, 1, &device);
 
   if(device == ADXL345_DEVICE){
@@ -45,7 +46,7 @@ bool FaBo3Axis::searchDevice()
 void FaBo3Axis::configuration()
 {
 
-  byte conf = ADXL345_SELF_TEST_OFF;
+  uint8_t conf = ADXL345_SELF_TEST_OFF;
   conf |= ADXL345_SPI_OFF;
   conf |= ADXL345_INT_INVERT_OFF;
   conf |= ADXL345_FULL_RES_OFF;
@@ -60,7 +61,7 @@ void FaBo3Axis::configuration()
  */
 void FaBo3Axis::powerOn()
 {
-  byte power = ADXL345_AUTO_SLEEP_OFF;
+  uint8_t power = ADXL345_AUTO_SLEEP_OFF;
   power |= ADXL345_MEASURE_ON;
   power |= ADXL345_SLEEP_OFF;
   power |= ADXL345_WAKEUP_8HZ;
@@ -77,7 +78,7 @@ void FaBo3Axis::powerOn()
 void FaBo3Axis::readXYZ(int *x, int *y, int *z)
 {
   uint8_t length = 6;
-  byte axis_buff[6];
+  uint8_t axis_buff[6];
   readI2c(0x32, length, axis_buff);
   *x = (((int)axis_buff[1]) << 8) | axis_buff[0];
   *y = (((int)axis_buff[3]) << 8) | axis_buff[2];
@@ -88,10 +89,10 @@ void FaBo3Axis::readXYZ(int *x, int *y, int *z)
  * @brief Read interrupts Status
  * @return byte : interrupts Status
  */
-byte FaBo3Axis::readIntStatus()
+uint8_t FaBo3Axis::readIntStatus()
 {
 
-  byte buff;
+  uint8_t buff;
   readI2c(ADXL345_INT_SOURCE_REG, 1, &buff);
 
   return buff;
@@ -108,7 +109,7 @@ void FaBo3Axis::enableTap()
   writeI2c(ADXL345_LATENT_REG, 0x78); // 1.25ms/LSB
   writeI2c(ADXL345_WINDOW_REG, 0xcb); // 1.25ms/LSB
 
-  byte int_tap = ADXL345_INT_SINGLE_TAP | ADXL345_INT_DOUBLE_TAP;
+  uint8_t int_tap = ADXL345_INT_SINGLE_TAP | ADXL345_INT_DOUBLE_TAP;
   writeI2c(ADXL345_INT_ENABLE_REG, int_tap); // Interrupts Tap Enable
 
   writeI2c(ADXL345_TAP_AXES_REG, ADXL345_TAP_AXES_Z_ON); // Tap Enable z axis
@@ -122,7 +123,7 @@ void FaBo3Axis::enableTap()
  * @retval true  : Tap
  * @retval false : Not Tap
  */
-bool FaBo3Axis::isSingleTap(byte value)
+bool FaBo3Axis::isSingleTap(uint8_t value)
 {
   if((value & 0b01000000) == 0b01000000){
     return true;
@@ -137,7 +138,7 @@ bool FaBo3Axis::isSingleTap(byte value)
  * @retval true  : Double Tap
  * @retval false : Not Double Tap
  */
-bool FaBo3Axis::isDoubleTap(byte value)
+bool FaBo3Axis::isDoubleTap(uint8_t value)
 {
   if((value & 0b00100000) == 0b00100000){
     return true;
@@ -151,9 +152,9 @@ bool FaBo3Axis::isDoubleTap(byte value)
  * @param [in] register_addr : Write Register Address
  * @param [in] value  : Write Data
  */
-void FaBo3Axis::writeI2c(byte register_addr, byte value)
+void FaBo3Axis::writeI2c(uint8_t register_addr, uint8_t value)
 {
-  Wire.beginTransmission(ADXL345_SLAVE_ADDRESS);
+  Wire.beginTransmission(_i2caddr);
   Wire.write(register_addr);
   Wire.write(value);
   Wire.endTransmission();
@@ -165,14 +166,13 @@ void FaBo3Axis::writeI2c(byte register_addr, byte value)
  * @param [in] num   : Data Length
  * @param [out] *buf : Read Data
  */
-void FaBo3Axis::readI2c(byte register_addr, int num, byte buffer[])
+void FaBo3Axis::readI2c(uint8_t register_addr, uint8_t num, uint8_t buffer[])
 {
-  Wire.beginTransmission(ADXL345_SLAVE_ADDRESS);
+  Wire.beginTransmission(_i2caddr);
   Wire.write(register_addr);
   Wire.endTransmission();
 
-  Wire.beginTransmission(ADXL345_SLAVE_ADDRESS);
-  Wire.requestFrom(ADXL345_SLAVE_ADDRESS, num);
+  Wire.requestFrom(_i2caddr, num);
 
   int i = 0;
   while(Wire.available())
@@ -180,5 +180,4 @@ void FaBo3Axis::readI2c(byte register_addr, int num, byte buffer[])
     buffer[i] = Wire.read();
     i++;
   }
-  Wire.endTransmission();
 }
