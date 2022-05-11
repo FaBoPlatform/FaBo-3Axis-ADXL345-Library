@@ -12,7 +12,7 @@
 */
 
 #include <Wire.h>
-#include "./FaBo3Axis_ADXL345.h"
+#include <FaBo3Axis_ADXL345.h>
 
 FaBo3Axis fabo3axis;
 
