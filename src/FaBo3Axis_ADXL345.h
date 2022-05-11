@@ -23,7 +23,8 @@
 #define ADXL345_DEVID_REG 0x00
 /** Device id */
 #define ADXL345_DEVICE 0xe5
-
+/** Data rate and power mode control */
+#define ADXL345_BW_RATE_REG 0x2C
 /** Tap Threshold */
 #define ADXL345_THRESH_TAP_REG 0x1D
 /** Tap Duration */
@@ -111,6 +112,24 @@
 /** WAKEUP 1Hz */
 #define ADXL345_WAKEUP_1HZ 0b11
 
+/** DATA RATE */
+#define ADXL345_DATARATE_3200HZ 0b1111
+#define ADXL345_DATARATE_1600HZ 0b1110
+#define ADXL345_DATARATE_800HZ  0b1101
+#define ADXL345_DATARATE_400HZ  0b1100
+#define ADXL345_DATARATE_200HZ  0b1011
+#define ADXL345_DATARATE_100HZ  0b1010
+#define ADXL345_DATARATE_50HZ   0b1001
+#define ADXL345_DATARATE_25HZ   0b1000
+#define ADXL345_DATARATE_12_5HZ 0b0111
+#define ADXL345_DATARATE_6_25HZ 0b0110
+#define ADXL345_DATARATE_3_13HZ 0b0101
+#define ADXL345_DATARATE_1_56HZ 0b0100
+#define ADXL345_DATARATE_0_78HZ 0b0011
+#define ADXL345_DATARATE_0_39HZ 0b0010
+#define ADXL345_DATARATE_0_20HZ 0b0001
+#define ADXL345_DATARATE_0_10HZ 0b0000
+    
 /**
  * @class FaBo3Axis
  * @brief 3Axis Control
@@ -119,8 +138,10 @@ class FaBo3Axis
 {
 public:
   FaBo3Axis(uint8_t addr = ADXL345_SLAVE_ADDRESS);
+  void initPin(int sda, int scl);
   bool searchDevice(void);
   void configuration(void);
+  void setRate(uint8_t rate);
   void powerOn(void);
   void readXYZ(int *x, int *y, int *z);
   uint8_t readIntStatus();
